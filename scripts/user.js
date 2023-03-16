@@ -3,68 +3,69 @@ var core;
 (function (core) {
     class User {
         m_displayName;
-        m_userName;
+        m_emailAddress;
+        m_username;
         m_password;
-        m_emailaddress;
-        constructor(displayName = "", emailAddress = " ", username = "", password = "") {
-            this.m_displayName = displayName;
-            this.m_userName = username;
-            this.m_password = password;
-            this.m_emailaddress = emailAddress;
-        }
         get DisplayName() {
             return this.m_displayName;
         }
-        set DisplayName(value) {
-            this.m_displayName = value;
+        set DisplayName(name) {
+            this.m_displayName = name;
+        }
+        get EmailAddress() {
+            return this.m_emailAddress;
+        }
+        set EmailAddress(email_address) {
+            this.m_emailAddress = email_address;
         }
         get Username() {
-            return this.m_userName;
+            return this.m_username;
         }
-        set Username(value) {
-            this.m_userName = value;
+        set Username(username) {
+            this.m_username = username;
         }
         get Password() {
             return this.m_password;
         }
-        set Password(value) {
-            this.m_password = value;
+        set Password(password) {
+            this.m_password = password;
         }
-        set EmailAddress(emailAddress) {
-            this.m_emailaddress = emailAddress;
-        }
-        get EmailAddress() {
-            return this.m_emailaddress;
+        constructor(displayName = "", emailAddress = "", username = "", password = "") {
+            this.m_displayName = displayName;
+            this.m_emailAddress = emailAddress;
+            this.m_username = username;
+            this.m_password = password;
         }
         toString() {
-            return `Display Name:${this.DisplayName}  \n Email Address :${this.EmailAddress} \n Username :${this.Username}`;
+            return `Display Name    : ${this.DisplayName} \nEmail Address : ${this.EmailAddress} \nUsername : ${this.Username}`;
         }
         toJSON() {
             return {
-                "DisplayName": this.m_displayName,
-                "EmailAddress": this.m_emailaddress,
-                "Username": this.m_userName
+                "DisplayName": this.DisplayName,
+                "EmailAddress": this.EmailAddress,
+                "Username": this.Username
             };
         }
         fromJSON(data) {
-            this.m_displayName = data.DisplayName;
-            this.m_emailaddress = data.EmailAddress;
-            this.m_userName = data.Username;
-            this.m_password = data.Password;
+            this.DisplayName = data.DisplayName;
+            this.EmailAddress = data.EmailAddress;
+            this.Username = data.Username;
+            this.Password = data.Password;
         }
         serialize() {
-            if (this.DisplayName !== "" && this.EmailAddress !== "" && this.Username !== "" && this.Password !== "") {
-                return `${this.DisplayName},${this.EmailAddress},${this.Username},${this.Password}`;
+            if (this.DisplayName !== "" && this.EmailAddress !== "" && this.Username !== "") {
+                return `${this.DisplayName},${this.EmailAddress},${this.Username}`;
             }
-            console.error("one or more of the contact attribute is empty or missing");
-            return null;
+            else {
+                console.error("One or more properties of the User is empty");
+                return null;
+            }
         }
         deserialize(data) {
             let propertyArray = data.split(",");
             this.DisplayName = propertyArray[0];
             this.EmailAddress = propertyArray[1];
             this.Username = propertyArray[2];
-            this.Password = propertyArray[3];
         }
     }
     core.User = User;

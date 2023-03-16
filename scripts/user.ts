@@ -1,78 +1,126 @@
-
-namespace core{
-
-     export class User{
+namespace core
+{
+    export class User
+    {
+        // private instance members (data)
         private m_displayName: string;
-        private m_userName: string;
+        private m_emailAddress: string;
+        private m_username: string;
         private m_password: string;
-        private m_emailaddress: string;
 
-        constructor(displayName:string="",emailAddress:string =" ",username:string="",password:string=""){
-            this.m_displayName=displayName;
-            this.m_userName =username;
-            this.m_password = password;
-            this.m_emailaddress = emailAddress;
-
-        }
-        public get DisplayName():string {
+        // getters and setters
+        public get DisplayName(): string
+        {
             return this.m_displayName;
         }
-
-        public set DisplayName(value:string) {
-            this.m_displayName = value;
-        }
-        public get Username():string {
-            return this.m_userName;
+        
+        public set DisplayName(name: string)
+        {
+            this.m_displayName = name;
         }
 
-        public set Username(value:string) {
-            this.m_userName = value;
+        public get EmailAddress(): string
+        {
+            return this.m_emailAddress;
         }
-        public get Password():string {
+
+        public set EmailAddress(email_address: string)
+        {
+            this.m_emailAddress = email_address;
+        }
+
+        public get Username(): string
+        {
+            return this.m_username;
+        }
+
+        public set Username(username: string)
+        {
+            this.m_username = username;
+        }
+
+        public get Password(): string
+        {
             return this.m_password;
         }
 
-        public set Password(value:string) {
-            this.m_password = value;
-        }
-        public set EmailAddress(emailAddress:string)
+        public set Password(password: string)
         {
-            this.m_emailaddress = emailAddress;
-        }
-        public  get EmailAddress():string{
-            return  this.m_emailaddress;
-        }
-        public toString():string{
-            return `Display Name:${this.DisplayName}  \n Email Address :${this.EmailAddress} \n Username :${this.Username}`;
+            this.m_password = password;
         }
 
-        public toJSON():{DisplayName:string,EmailAddress: string ,Username:string  }{
-            return{
-            "DisplayName":this.m_displayName,
-                "EmailAddress":this.m_emailaddress,
-                "Username":this.m_userName
+        // constructor
+        constructor(displayName: string = "", emailAddress: string = "", username: string = "", password: string = "")
+        {
+            this.m_displayName = displayName;
+            this.m_emailAddress = emailAddress;
+            this.m_username = username;
+            this.m_password = password;
+        }
 
+        // method overrides
+
+        /**
+         * This method overrides the built-in toString method and returns a comma-separated string containing the object's property values
+         * @override
+         * @returns {string}
+         */
+        toString(): string
+        {
+            return `Display Name    : ${this.DisplayName} \nEmail Address : ${this.EmailAddress} \nUsername : ${this.Username}`;
+        }
+
+        // utility methods
+
+        // TODO: need to fix the Return type
+        toJSON()
+        {
+            return {
+                "DisplayName": this.DisplayName,
+                "EmailAddress": this.EmailAddress,
+                "Username": this.Username
             }
-       }
-        public fromJSON(data:User){
-            this.m_displayName =data.DisplayName;
-            this.m_emailaddress = data.EmailAddress;
-            this.m_userName =data.Username;
-            this.m_password = data.Password;
-        }
-        public serialize():string|null{
-            if(this.DisplayName !==""&& this.EmailAddress!== ""&& this.Username !== ""&& this.Password !== ""){
-                return `${this.DisplayName},${this.EmailAddress},${this.Username},${this.Password}`;
-            }
-            console.error("one or more of the contact attribute is empty or missing");
-            return null;
-        }
-        public deserialize(data:string){
-            let propertyArray:string[] = data.split(",");
-            this.DisplayName  = propertyArray[0];
-            this.EmailAddress  = propertyArray[1];
-            this.Username  = propertyArray[2];
-            this.Password  = propertyArray[3];
         }
 
-    }}
+        // TODO: need to fix the parameter data type
+        fromJSON(data: any): void
+        {
+            this.DisplayName = data.DisplayName;
+            this.EmailAddress = data.EmailAddress;
+            this.Username = data.Username;
+            this.Password = data.Password;
+        }
+
+        /**
+         * This method converts the object's properties into a comma-separated string
+         *
+         * @returns {(string | null)}
+         */
+        serialize(): string | null
+        {
+            if(this.DisplayName !== "" && this.EmailAddress !== "" && this.Username !== "")
+            {
+                return `${this.DisplayName},${this.EmailAddress},${this.Username}`;
+            }
+            else
+            {
+                console.error("One or more properties of the User is empty");
+                return null;
+            }
+        }
+
+        /**
+         * This method separates the data string parameter into the object's properties
+         *
+         * @param {string} data
+         * @returns {void}
+         */
+        deserialize(data: string)
+        {
+            let propertyArray: string[] = data.split(",");
+            this.DisplayName = propertyArray[0];
+            this.EmailAddress = propertyArray[1];
+            this.Username = propertyArray[2];
+        }
+    }
+}
